@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>김/바다고리풀속 &amp; 블루카본 연구 매거진 | Phyco &amp; Blue Carbon Biweekly</title>
+  <meta name="description" content="김(Pyropia/Porphyra), 바다고리풀(Asparagopsis), 블루카본 및 메탄저감 해조류 연구 자동화 학술 매거진">
+
+  <!-- Favicon SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
+
+  <!-- Tailwind CSS CDN -->
+  <!-- 스크립트는 외부 CDN 대신 이 사이트에 함께 올린 파일(public/vendor/)을 씁니다.
+       CDN 이 오염되거나 바뀌어도 영향이 없고, CSP 에서 외부 스크립트를 모두 막을 수 있습니다.
+       (내려받을 때 sha384 무결성 값을 확인했습니다: tailwindcss 3.4.17, lucide 1.54.0) -->
+  <script src="vendor/tailwindcss-3.4.17.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            ocean: {
+              50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4',
+              400: '#2dd4bf', 500: '#14b8a6', 600: '#0d9488', 700: '#0f766e',
+              800: '#115e59', 900: '#134e4a', 950: '#042f2e',
+            },
+            deepsea: { 800: '#0b192c', 900: '#051120', 950: '#020914' }
+          },
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        integrity="sha384-ei/b2Mz3F5J8nqTvpKS89CkzDCuD7Cc+/F+OsaPUKItzHgLNKnGq3rjtYq/B7RnO"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="vendor/lucide-1.54.0.min.js"></script>
+  <style>
+    body { font-family: 'Pretendard', sans-serif; }
+    .font-serif-mag { font-family: 'Newsreader', Georgia, serif; }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dark .glass-panel {
+      background: rgba(11, 25, 44, 0.9);
+    }
+    .gradient-hero {
+      background: radial-gradient(circle at 10% 20%, rgba(13,148,136,.15) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 80%, rgba(6,182,212,.12) 0%, transparent 40%);
+    }
+  </style>
+</head>
+<body class="bg-slate-100/60 dark:bg-deepsea-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200">
+
+  <!-- 상단 글로벌 네비게이션 -->
+  <header class="sticky top-0 z-40 glass-panel border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <span class="text-2xl animate-pulse">🌊</span>
+        <div>
+          <a href="#" class="font-black text-lg text-ocean-900 dark:text-ocean-200 tracking-tight flex items-center gap-2">
+            PHYCO &amp; BLUE CARBON
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-ocean-100 text-ocean-800 dark:bg-ocean-950 dark:text-ocean-300 font-bold border border-ocean-300 dark:border-ocean-700">Research Magazine</span>
+          </a>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">홍조류 신분류체계 생물학 · 스마트 양식 · 해양 탄소격리 전문 격주간지</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button id="archive-modal-btn" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition">
+          <i data-lucide="archive" class="w-4 h-4 text-ocean-600"></i>
+          <span>지난 호수 열람</span>
+          <span id="archive-count-badge" class="ml-1 text-[11px] px-1.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold">1</span>
+        </button>
+        <button id="theme-toggle" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition" title="다크 모드 전환">
+          <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+          <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- 섹션 바로가기 네비게이터 -->
+    <div class="border-t border-slate-200/60 dark:border-slate-800/80 bg-white/70 dark:bg-deepsea-900/70 backdrop-blur-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between text-xs overflow-x-auto gap-4">
+        <span class="text-slate-400 font-semibold uppercase tracking-wider shrink-0 flex items-center gap-1">
+          <i data-lucide="compass" class="w-3.5 h-3.5"></i> 섹션:
+        </span>
+        <div class="flex items-center space-x-2 shrink-0">
+          <a href="#sec-breeding" id="nav-breeding" class="px-3 py-1 rounded-md bg-rose-50 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 hover:bg-rose-100 font-medium transition flex items-center gap-1 border border-rose-200 dark:border-rose-800">
+            <span>🧬 01. 육종·유전체·병해</span>
+          </a>
+          <a href="#sec-physiology" id="nav-physiology" class="px-3 py-1 rounded-md bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 hover:bg-emerald-100 font-medium transition flex items-center gap-1 border border-emerald-200 dark:border-emerald-800">
+            <span>🌱 02. 엽체 생리·생활사</span>
+          </a>
+          <a href="#sec-aquaculture" id="nav-aquaculture" class="px-3 py-1 rounded-md bg-violet-50 text-violet-800 dark:bg-violet-950/60 dark:text-violet-300 hover:bg-violet-100 font-medium transition flex items-center gap-1 border border-violet-200 dark:border-violet-800">
+            <span>🏭 03. 양식·배양</span>
+          </a>
+          <a href="#sec-processing" id="nav-processing" class="px-3 py-1 rounded-md bg-orange-50 text-orange-800 dark:bg-orange-950/60 dark:text-orange-300 hover:bg-orange-100 font-medium transition flex items-center gap-1 border border-orange-200 dark:border-orange-800">
+            <span>🏷️ 04. 가공·소재·시장</span>
+          </a>
+          <a href="#sec-bluecarbon" id="nav-bluecarbon" class="px-3 py-1 rounded-md bg-cyan-50 text-cyan-800 dark:bg-cyan-950/60 dark:text-cyan-300 hover:bg-cyan-100 font-medium transition flex items-center gap-1 border border-cyan-200 dark:border-cyan-800">
+            <span>🌍 05. 블루카본·메탄·환경</span>
+          </a>
+          <a href="#sec-related" id="nav-related" class="px-3 py-1 rounded-md bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 hover:bg-amber-100 font-medium transition flex items-center gap-1 border border-amber-200 dark:border-amber-800">
+            <span>🔗 06. 연관 연구</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 매거진 메인 히어로 배너 -->
+  <section class="gradient-hero border-b border-slate-200/80 dark:border-slate-800/80 py-10 sm:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ocean-100/90 dark:bg-ocean-950/90 border border-ocean-300 dark:border-ocean-800 text-ocean-900 dark:text-ocean-300 text-xs font-bold mb-4">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+          <span>BIWEEKLY RESEARCH MAGAZINE</span>
+          <span class="mx-1">•</span>
+          <span id="hero-issue-date">2026-10-07호</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+          해조류 오믹스부터<br class="hidden sm:inline" />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-ocean-600 via-teal-500 to-cyan-500 dark:from-ocean-400 dark:via-teal-300 dark:to-cyan-300">
+            해양 탄소격리 기후테크
+          </span>까지
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+          <em>Pyropia</em>, <em>Porphyra</em>, <em>Neopyropia</em>, <em>Neoporphyra</em>, <em>Phycocalidia</em> 및 <em>Asparagopsis</em>의
+          최신 학술 논문을 5개 전문 섹션과 연관 연구로 엄선하여 핵심 요약, 시사점, 에디터 트렌드 브리핑과 함께 제공합니다.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-4 pt-2">
+          <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            이번 호 분석 논문: <strong id="stat-papers" class="text-slate-900 dark:text-white">-편</strong>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <span class="w-2.5 h-2.5 rounded-full bg-ocean-500"></span>
+            포함 생물군: <strong id="stat-taxa" class="text-slate-900 dark:text-white">6개 속</strong>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>
+            발행 주기: <strong class="text-slate-900 dark:text-white">격주 수요일 정기 발행</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 실시간 검색 및 생물군 필터 바 -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
+    <div class="glass-panel p-4 sm:p-5 rounded-2xl shadow-xl border border-slate-200/90 dark:border-slate-800/90 space-y-3">
+      <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div class="relative w-full sm:max-w-md">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="search-input" placeholder="헤드라인, 저자, 초록, 키워드 실시간 검색..."
+            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-deepsea-900 text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500 transition" />
+        </div>
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+          <span class="text-xs text-slate-500 dark:text-slate-400">검색 매칭: <strong id="filter-count" class="text-ocean-600 dark:text-ocean-400 font-bold">-</strong>건</span>
+          <button id="reset-filters" class="text-xs px-2.5 py-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-white transition underline">필터 초기화</button>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 flex-wrap pt-2 border-t border-slate-100 dark:border-slate-800/60 text-xs">
+        <span class="text-slate-400 text-[11px] font-semibold mr-1 flex items-center gap-1">
+          <i data-lucide="tag" class="w-3 h-3"></i> 생물군 필터:
+        </span>
+        <button data-taxa="all" class="taxa-btn px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-slate-100">전체보기</button>
+        <button data-taxa="Pyropia" class="taxa-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 border border-slate-200 dark:border-slate-700">Pyropia (김속)</button>
+        <button data-taxa="Porphyra" class="taxa-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 border border-slate-200 dark:border-slate-700">Porphyra (원형 김)</button>
+        <button data-taxa="Neopyropia" class="taxa-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 border border-slate-200 dark:border-slate-700">Neopyropia (방사무늬김)</button>
+        <button data-taxa="Neoporphyra" class="taxa-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 border border-slate-200 dark:border-slate-700">Neoporphyra (모무늬돌김)</button>
+        <button data-taxa="Phycocalidia" class="taxa-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 border border-slate-200 dark:border-slate-700">Phycocalidia</button>
+        <button data-taxa="Asparagopsis" class="taxa-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 border border-slate-200 dark:border-slate-700">Asparagopsis (바다고리풀)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 매거진 본문: 4대 카테고리별 섹션 구역 분리 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ========== SECTION 01: 육종 · 유전체 · 병해 ========== -->
+    <section id="sec-breeding" class="scroll-mt-32">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-rose-500 pb-3 mb-6">
+        <div>
+          <span class="text-xs font-black tracking-widest text-rose-600 dark:text-rose-400 uppercase">SECTION 01</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>🧬 육종 · 유전체 · 병해</span>
+            <span class="text-sm font-normal text-slate-400">(Breeding, Genomics &amp; Disease)</span>
+          </h2>
+        </div>
+        <span id="badge-count-breeding" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 w-fit mt-2 sm:mt-0">0편 수록</span>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-r from-rose-500/10 via-rose-500/5 to-transparent border border-rose-200 dark:border-rose-900/60 p-5 mb-8 shadow-sm">
+        <div class="flex items-center gap-2 text-rose-800 dark:text-rose-300 font-bold text-sm mb-2">
+          <i data-lucide="feather" class="w-4 h-4 text-rose-600"></i>
+          <span>Editor's Insight: <span id="insight-title-breeding" class="font-extrabold"></span></span>
+        </div>
+        <p id="insight-content-breeding" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+      </div>
+      <div id="grid-breeding" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- JS 주입 --></div>
+    </section>
+
+    <!-- ========== SECTION 02: 엽체 생리 · 생활사 ========== -->
+    <section id="sec-physiology" class="scroll-mt-32">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-emerald-500 pb-3 mb-6">
+        <div>
+          <span class="text-xs font-black tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">SECTION 02</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>🌱 엽체 생리 · 생활사</span>
+            <span class="text-sm font-normal text-slate-400">(Physiology &amp; Life Cycle)</span>
+          </h2>
+        </div>
+        <span id="badge-count-physiology" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 w-fit mt-2 sm:mt-0">0편 수록</span>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-200 dark:border-emerald-900/60 p-5 mb-8 shadow-sm">
+        <div class="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-bold text-sm mb-2">
+          <i data-lucide="feather" class="w-4 h-4 text-emerald-600"></i>
+          <span>Editor's Insight: <span id="insight-title-physiology" class="font-extrabold"></span></span>
+        </div>
+        <p id="insight-content-physiology" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+      </div>
+      <div id="grid-physiology" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- JS 주입 --></div>
+    </section>
+
+    <!-- ========== SECTION 03: 양식 · 배양 기술 ========== -->
+    <section id="sec-aquaculture" class="scroll-mt-32">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-violet-500 pb-3 mb-6">
+        <div>
+          <span class="text-xs font-black tracking-widest text-violet-600 dark:text-violet-400 uppercase">SECTION 03</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>🏭 양식 · 배양 기술</span>
+            <span class="text-sm font-normal text-slate-400">(Cultivation &amp; Farming)</span>
+          </h2>
+        </div>
+        <span id="badge-count-aquaculture" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-violet-100 text-violet-800 dark:bg-violet-950 dark:text-violet-300 w-fit mt-2 sm:mt-0">0편 수록</span>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-r from-violet-500/10 via-violet-500/5 to-transparent border border-violet-200 dark:border-violet-900/60 p-5 mb-8 shadow-sm">
+        <div class="flex items-center gap-2 text-violet-800 dark:text-violet-300 font-bold text-sm mb-2">
+          <i data-lucide="feather" class="w-4 h-4 text-violet-600"></i>
+          <span>Editor's Insight: <span id="insight-title-aquaculture" class="font-extrabold"></span></span>
+        </div>
+        <p id="insight-content-aquaculture" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+      </div>
+      <div id="grid-aquaculture" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- JS 주입 --></div>
+    </section>
+
+    <!-- ========== SECTION 04: 가공 · 소재 · 시장 ========== -->
+    <section id="sec-processing" class="scroll-mt-32">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-orange-500 pb-3 mb-6">
+        <div>
+          <span class="text-xs font-black tracking-widest text-orange-600 dark:text-orange-400 uppercase">SECTION 04</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>🏷️ 가공 · 소재 · 시장</span>
+            <span class="text-sm font-normal text-slate-400">(Processing, Materials &amp; Market)</span>
+          </h2>
+        </div>
+        <span id="badge-count-processing" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300 w-fit mt-2 sm:mt-0">0편 수록</span>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-r from-orange-500/10 via-orange-500/5 to-transparent border border-orange-200 dark:border-orange-900/60 p-5 mb-8 shadow-sm">
+        <div class="flex items-center gap-2 text-orange-800 dark:text-orange-300 font-bold text-sm mb-2">
+          <i data-lucide="feather" class="w-4 h-4 text-orange-600"></i>
+          <span>Editor's Insight: <span id="insight-title-processing" class="font-extrabold"></span></span>
+        </div>
+        <p id="insight-content-processing" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+      </div>
+      <div id="grid-processing" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- JS 주입 --></div>
+    </section>
+
+    <!-- ========== SECTION 05: 블루카본 · 메탄 저감 · 환경 ========== -->
+    <section id="sec-bluecarbon" class="scroll-mt-32">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-cyan-500 pb-3 mb-6">
+        <div>
+          <span class="text-xs font-black tracking-widest text-cyan-600 dark:text-cyan-400 uppercase">SECTION 05</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>🌍 블루카본 · 메탄 저감 · 환경</span>
+            <span class="text-sm font-normal text-slate-400">(Blue Carbon, Methane &amp; Environment)</span>
+          </h2>
+        </div>
+        <span id="badge-count-bluecarbon" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300 w-fit mt-2 sm:mt-0">0편 수록</span>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-r from-cyan-500/10 via-cyan-500/5 to-transparent border border-cyan-200 dark:border-cyan-900/60 p-5 mb-8 shadow-sm">
+        <div class="flex items-center gap-2 text-cyan-800 dark:text-cyan-300 font-bold text-sm mb-2">
+          <i data-lucide="feather" class="w-4 h-4 text-cyan-600"></i>
+          <span>Editor's Insight: <span id="insight-title-bluecarbon" class="font-extrabold"></span></span>
+        </div>
+        <p id="insight-content-bluecarbon" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+      </div>
+      <div id="grid-bluecarbon" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- JS 주입 --></div>
+    </section>
+
+    <!-- ========== SECTION 06: 연관 연구 ========== -->
+    <section id="sec-related" class="scroll-mt-32">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-amber-500 pb-3 mb-6">
+        <div>
+          <span class="text-xs font-black tracking-widest text-amber-600 dark:text-amber-400 uppercase">SECTION 06</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>🔗 연관 연구</span>
+            <span class="text-sm font-normal text-slate-400">(Related Research)</span>
+          </h2>
+        </div>
+        <span id="badge-count-related" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 w-fit mt-2 sm:mt-0">0편 수록</span>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-200 dark:border-amber-900/60 p-5 mb-8 shadow-sm">
+        <div class="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold text-sm mb-2">
+          <i data-lucide="feather" class="w-4 h-4 text-amber-600"></i>
+          <span>Editor's Note: <span id="insight-title-related" class="font-extrabold"></span></span>
+        </div>
+        <p id="insight-content-related" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+      </div>
+      <div id="grid-related" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- JS 주입 --></div>
+    </section>
+
+    <!-- 검색 결과 없음 -->
+    <div id="empty-state" class="hidden text-center py-20 bg-white dark:bg-deepsea-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+      <i data-lucide="file-search" class="w-14 h-14 mx-auto text-slate-300 dark:text-slate-600 mb-3"></i>
+      <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">일치하는 연구 논문이 없습니다</h3>
+      <p class="text-xs text-slate-500 mt-1">다른 검색어나 생물군 태그(전체보기)를 선택해 보세요.</p>
+    </div>
+
+  </main>
+
+  <!-- 플로팅 맨 위로 -->
+  <a href="#" class="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-ocean-600 text-white shadow-lg hover:bg-ocean-700 transition flex items-center justify-center" title="맨 위로">
+    <i data-lucide="arrow-up" class="w-5 h-5"></i>
+  </a>
+
+  <!-- 지난 아카이브 모달 -->
+  <div id="archive-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-xl rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-2">
+          <i data-lucide="archive" class="w-5 h-5 text-ocean-600"></i>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white">지난 호수 목록</h2>
+        </div>
+        <button id="close-modal" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <p class="text-xs text-slate-500">이 화면에서 바로 넘겨 볼 수 있는 호입니다. 지금까지 발행된 2개 호 전체는 아래 목록에서 볼 수 있습니다.</p>
+      <div id="archive-list" class="space-y-2 overflow-y-auto pr-1 flex-1"><!-- JS 동적 생성 --></div>
+      <div class="pt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-400">
+        <a href="archive.html" class="inline-flex items-center gap-1 font-bold text-ocean-600 dark:text-ocean-400 hover:underline">
+          <i data-lucide="library" class="w-3.5 h-3.5"></i> 지난 호 전체 보기 →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer class="mt-20 border-t border-slate-200 dark:border-slate-800 py-12 bg-white/70 dark:bg-deepsea-900/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-500 dark:text-slate-400">
+      <div>
+        <p class="font-bold text-sm text-slate-800 dark:text-slate-200">PHYCO &amp; BLUE CARBON RESEARCH MAGAZINE v2.0</p>
+        <p class="mt-1">Automated Research Pipeline powered by GitHub Actions &amp; Vercel Global Edge</p>
+        <p class="mt-0.5 text-slate-400 text-[11px]">Target Genera: Pyropia, Porphyra, Neopyropia, Neoporphyra, Phycocalidia, Asparagopsis</p>
+        <p class="mt-0.5 text-slate-400 text-[11px]">5+1 Sections: Breeding · Physiology · Cultivation · Processing &amp; Market · Blue Carbon · Related Research</p>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="index.html" class="hover:text-ocean-600 dark:hover:text-ocean-400 transition flex items-center gap-1 font-medium">
+          <i data-lucide="house" class="w-4 h-4"></i> 최신 호
+        </a>
+        <span>•</span>
+        <a href="archive.html" class="hover:text-ocean-600 dark:hover:text-ocean-400 transition flex items-center gap-1 font-medium">
+          <i data-lucide="library" class="w-4 h-4"></i> 지난 호 전체
+        </a>
+        <span>•</span>
+        <span>Biweekly (Wed) Auto-Update</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 클라이언트 로직 및 데이터 주입 -->
+  <script>
+    const ALL_ARCHIVES = [{"filename": "2026-11-04-weekly-digest.md", "title": "김·바다고리풀속 및 블루카본 연구 격주 다이제스트 (2026-11-04)", "date": "2026-11-04", "total_papers": 19, "taxa_covered": ["Porphyra", "Neoporphyra", "Pyropia", "Unclassified"], "categories": ["breeding_molecular_pathology", "thallus_lifecycle_conchocelis", "smart_aquaculture_mass_culture", "processing_materials_market", "blue_carbon_feed_methane", "related_research"], "editor_insights": {"smart_aquaculture_mass_culture": {"title": "ICT와 AI를 접목한 스마트 김 양식 기술의 고도화", "content": "이번 호에서는 김 양식의 생산성과 품질 관리를 높이기 위한 첨단 기술 연구를 조명한다. 비시약식 광학 센서 시스템을 통한 정밀한 질산성 질소 모니터링과 AI 딥러닝 기반의 종자 자동 분리 및 상태 진단 공정 시스템 도입으로 현장 효율성을 한층 끌어올릴 수 있음을 확인했다.", "source": "gemini"}, "thallus_lifecycle_conchocelis": {"title": "Pyropia 속의 스트레스 응답과 생리적 조절 기전", "content": "Pyropia 속 해조류는 영양 결핍, 산화 스트레스, 고염 환경 등 다양한 외부 환경 변화 속에서 단백질 발현, 활성산소 균형, 그리고 칼슘 신호전달과 SOS 경로를 통해 생리와 성숙을 정교하게 조절한다. 특히 세포 내외의 신호전달 체계와 유전자 발현은 극한의 스트레스 조건에서 이들의 생존과 발달을 결정하는 핵심적인 역할을 수행한다.", "source": "gemini"}, "breeding_molecular_pathology": {"title": "Pyropia haitanensis 유전체 선발과 수량 형질 예측", "content": "본 섹션에서는 Pyropia haitanensis의 DH 집단 전장 유전체 서열 분석을 통해 수량 관련 형질의 유전율과 예측 정확도를 조명했다. 5가지 수량 형질의 유전율은 0.12에서 0.57 사이로 나타났으며, random forest 모델이 0.448에서 0.727의 예측 정확도를 기록하여 육종 효율을 높일 수 있는 가능성을 제시했다.", "source": "gemini"}, "processing_materials_market": {"title": "해조류 유래 소재의 항염증 및 대사 개선 효과", "content": "이번 호 '가공·소재·시장' 섹션에서는 해조류 성분이 지닌 항염증, 장내 미생물 조절, 그리고 양식 어류의 성장 및 지질 대사 개선 효과를 다룬 연구들을 조명한다. Porphyra / Pyropia sp. 유래 폴리뉴클레오타이드와 황산화 다당류는 세포와 조직 단계에서 염증 및 산화 스트레스를 효과적으로 조절함을 보여주며, 복합 해조류 사료는 어류의 성장 촉진과 지질 대사 관련 유전자 발현을 향상시켜 산업적 활용 가능성을 제시한다.", "source": "gemini"}, "related_research": {"title": "해조류 신종 발견과 다각적 활용 연구", "content": "이번 호에서는 유전자 분석과 현장 조사를 통해 파래속(Ulva)과 Colaconema zhanjiangensis, Lobophora 속 등의 신종과 미기록종을 대거 규명하며 글로벌 종 다양성과 계통 지리적 분포를 밝혔다. 또한 양식장 환경 평가부터 어업 부산물의 자외선 차단 성분 탐색, 표현체학 기반 육종 체계, 식품 첨가 활용까지 해조류의 생태적 가치와 산업적 응용 가능성을 폭넓게 다뤘다.", "source": "gemini"}}, "articles": [{"title": "김(Pyropia spp.) 양식장 황백화 위험환경 모니터링을 위한 비시약식 광학 센서 시스템 개발 및 현장 실증", "headline": "김 양식장 황백화 예방을 위한 비시약식 광학 센서 시스템 개발 및 현장 실증", "takeaways": ["김 양식의 안정적인 생산을 위협하는 환경 변동에 대응하기 위해, 황백화 위험과 관련된 양분 조건을 실시간으로 모니터링할 수 있는 비시약식 다중 파장 광학 센서의 현장 적용성을 평가했다.", "실내 실험 결과, 0.02~1.00 mg/L 범위의 질산성 질소 농도에서 R²=0.9997의 높은 선형성을 보였으며, 연안 양식장 현장 검증에서는 실내 분석 결과와 일치하는 경향을 보이고 평균 측정 오차가 0.001~0.008 mg/L 범위로 나타났다.", "개발된 광학 센서는 김 양식장에서 황백화 위험을 유발하는 영양염 조건을 실시간으로 추적하기 위한 보조 도구로 활용될 수 있다."], "implications": "양식 현장의 관리자는 질산성 질소 농도를 실시간으로 파악하여 황백화 피해를 사전에 예방하고 영양염 시비를 적시에 조절할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80", "abstract": "Continuous monitoring of the marine environment is essential for stable production in laver (Pyropia spp.) aquaculture, which is highly susceptible to environmental fluctuations. This study evaluated the field applicability of a reagent-free, multi-wavelength optical sensor for monitoring nutrient conditions associated with discoloration risk in laver aquaculture and aimed to provide baseline data for the development of a real-time monitoring system. In laboratory tests, the sensor exhibited high linearity (R²=0.9997) over a nitrate-nitrogen concentration range of 0.02–1.00 mg/L, although uncertainty increased at the lowest tested concentration (0.02 mg/L). During field validation in coastal waters near laver farms, where seawater optical properties vary with salinity and turbidity, sensor measurements showed trends consistent with those obtained from laboratory analyses. Differences between the mean concentrations measured by the sensor and those determined by laboratory analyses ranged from 0.001 to 0.008 mg/L. These findings suggest that the optical sensor can serve as a supplementary tool for real-time monitoring of nutrient conditions associated with discoloration risk in laver aquaculture.", "authors": "임창용, 최보현, 박남도, 선승천 외", "journal": "한국수산과학회지", "year": "2026", "doi": "", "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003396563", "taxa": ["Pyropia"], "category": "smart_aquaculture_mass_culture", "category_name": "양식 · 배양 기술", "badge_color": "violet", "source": "KCI", "lang": "ko", "tier": "core", "is_domestic": true, "scientific_names": ["Pyropia"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "AI 딥러닝 기반 김 종자(포자) 최적 분리 및 상태 진단 기술의 양식 공정 학습 시스템 연구", "headline": "AI 딥러닝 기반 김 종자 자동 분리 및 상태 진단 공정 시스템", "takeaways": ["김 종자인 과포자의 자동 선별과 상태 진단을 위한 3계층 공정 학습 시스템을 제안했다.", "12,000장의 데이터셋으로 학습한 모델은 Accuracy 95.8%, F1-score 94.0%를 기록했고 질소원이 추가된 PES 배지에서 최대 5.1±0.8 %/day의 성장률을 보였다.", "배양 성과를 등급 기준에 환류시켜 인식·진단·공정이 하나의 학습 루프로 연결됨을 입증했다."], "implications": "현장 양식장에서는 마이크로 실린지와 다중 객체 추적 기반의 자동화 장비를 도입하여 수작업 의존도를 낮추고 고품질 종자의 선별 정확도를 높일 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=800&q=80", "abstract": "본 연구는 김(Porphyra sp.) 종자인 과포자(carpospore)를 딥러닝 영상 인식으로 자동 선별·취출하고 개체의 상태를 정량 지표로 진단한 뒤 그 결과를 배양 공정에 환류시키는 3계층 공정 학습 시스템을 제안하고 실증하였다. 인식 계층은 20~400배 광학부에서 획득한 현미경 영상을 비지역 평균(NLM) 잡음 제거와 CLAHE 국소 대비 향상으로 전처리한 후, Apache 2.0 라이선스의 RTMDet-s 검출기와 StrongSORT 다중 객체 추적기를 결합하여 과포자를 실시간으로 검출·계수하였다. 진단 계층은 직경(10~20 μm), 구형도(0.9 이상), 세포 광 투과도 및 내부 과립 texture를 활력 지표로 정의하여 3단계 등급(A/B/C)으로 판정하고, 활력·접근성·군집 이격도를 가중 합산한 취출 우선순위 스코어를 산출하였다. 공정 계층은 X-Y-Z 직교좌표계 마이크로 실린지로 상위 등급 개체를 선택 취출하여 PES 배지에서 배양하고 발아율과 일간 성장률을 계측하였다. 총 12,000장의 데이터셋으로 학습한 모델은 Accuracy 95.8%, F1-score 94.0%를 나타내었고 10회 반복 실증에서 평균 취출 정확도 86.0%를 확보하였다. 취출 종자는 15℃·72시간 조건에서 92.4%의 최고 발아율을, 20℃와 40 μmol photons m-2 s-1에서 각각 4.5±0.7 및 4.2±0.6 %/day의 최대 성장률을 나타내었으며, PES 배지에 질소원을 추가한 조건에서 5.1±0.8 %/day로 가장 높았다(p<0.05). 계측된 배양 성과를 등급 기준과 스코어 가중치의 재보정에 환류함으로써 인식·진단·공정이 하나의 학습 루프로 연결됨을 확인하였다", "authors": "정성하, 성백섭", "journal": "실천공학교육논문지", "year": "2026", "doi": "", "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003400149", "taxa": ["Porphyra", "Pyropia"], "category": "smart_aquaculture_mass_culture", "category_name": "양식 · 배양 기술", "badge_color": "violet", "source": "KCI", "lang": "ko", "tier": "core", "is_domestic": true, "scientific_names": ["Porphyra"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Identification and characterization of a periplasmic phosphate-binding protein in phosphorus-starved Pyropia yezoensis", "headline": "인산 결핍 조건에서 유도되는 Pyropia yezoensis의 32-kDa 인산 결합 단백질 특성", "takeaways": ["Pyropia yezoensis는 인산 결핍 조건에서 145, 76, 66, 52, 42, 32, 16 kDa 크기의 여러 폴리펩타이드 합성이 현저히 유도된다.", "가장 풍부하게 발현된 32-kDa 폴리펩타이드는 24개의 아미노산 시그널 펩타이드와 299개의 아미노산 성체 단백질을 포함하는 323개 아미노산 전구체 코딩 유전자로 확인되었다.", "정제된 천연 및 재조합 단백질은 평형 투석 분석에서 인산 결합 능력을 보였으며, 이는 세포주기 내 페리플라스즘 인산 결합 단백질과 알칼리 포스파타아제가 인산 획득에 기여함을 시사한다."], "implications": "영양염 결핍 환경에서 해조류의 무기물 흡수 및 대사 조절 기전을 이해함으로써, 향후 양식장 환경 모니터링 및 영양 스트레스에 대응하는 품종 관리 전략 수립에 활용할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80", "abstract": "The synthesis of several polypeptides (145, 76, 66, 52, 42, 32, and 16 kDa) in Pyropia yezoensis was markedly induced under phosphorus-starved conditions. The most abundant 32-kDa polypeptide was purified and characterized. Comparison of the genomic and cDNA sequences revealed an intronless gene encoding a 323-amino-acid precursor protein with a 24-amino-acid signal peptide and a 299-amino-acid mature protein. The mature 32-kDa polypeptide showed high sequence similarity to periplasmic phosphate-binding proteins (PBPs) from Escherichia coli and marine cyanobacteria. Both the native and recombinant proteins exhibited phosphate-binding ability in equilibrium dialysis assays. Immunological analyses indicated that the phosphorus-starvation-induced 32-kDa PBP is localized to the periplasmic space. Northern blot and quantitative real-time PCR analyses demonstrated that PBP gene expression was strongly induced by phosphorus starvation. These findings support a model of phosphate acquisition in P. yezoensis under phosphorus-starved conditions involving a periplasmic PBP and alkaline phosphatase.", "authors": "Miwa Y, Yano Y, Kono T, Yoshimizu M, Yamagishi Y.", "journal": "Academic Journal", "year": "2026", "doi": "10.1093/bbb/zbag163", "url": "https://doi.org/10.1093/bbb/zbag163", "taxa": ["Pyropia"], "category": "thallus_lifecycle_conchocelis", "category_name": "엽체 생리 · 생활사", "badge_color": "emerald", "source": "Europe PMC", "lang": "en", "tier": "core", "is_domestic": false, "scientific_names": ["Pyropia yezoensis", "Escherichia coli"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Evaluation of genomic prediction accuracy for yield-related traits in Pyropia haitanensis", "headline": "Pyropia haitanensis 유전체 선발을 통한 수량 관련 형질 예측 정확도 규명", "takeaways": ["전통적인 육종 주기의 한계를 극복하기 위해 Pyropia haitanensis의 수량 관련 형질을 개선할 수 있는 유전체 선발 전략이 필요하다.", "DH 집단의 전장 유전체 서열 분석 결과, 5가지 수량 형질의 유전율은 0.12에서 0.57 사이였으며 random forest 모델이 0.448~0.727의 정확도를 기록했다.", "마커 수가 1,000~5,000개에 도달했을 때 예측 정확도가 정체기에 이르렀으며 형질의 유전적 아키텍처에 맞는 최적의 모델 선택이 중요하다."], "implications": "현장 양식가와 육종 연구자는 마커 밀도와 형질 특성을 고려하여 random forest 등의 예측 모델을 유연하게 적용함으로써 우수 품종 선발 효율을 극대화할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=800&q=80", "abstract": "Pyropia haitanensis, a representative species of intertidal red algae, has significant economic value. However, its traditional breeding cycle is lengthy and inefficient, leading to a shortage of new varieties of P. haitanensis. Genomic selection (GS), an efficient molecular-breeding strategy, holds promise for accelerating the genetic improvement of yield-related traits. To date, no systematic GS study has been reported for red algae. In this study, we used a doubled haploid (DH) population to perform genomic prediction for five yield‑related traits (length, width, fresh weight, days to maturity, and thickness) based on whole-genome sequencing data. We systematically compared the effects of eight statistical models on prediction accuracy and evaluated the effect of different marker densities, ranging from 100 SNPs to the full marker set, under two SNP selection strategies: genome-wide association study (GWAS)-based selection and random selection. The results showed that the heritability of five yield traits ranged from 0.12 (length) to 0.57 (thickness). The random forest (RF) model consistently achieved higher prediction accuracy than the other models across all traits, with accuracies ranging from 0.448 for length to 0.727 for thickness. For all models, prediction accuracy reached a plateau when the number of markers was in the range of 1,000-5,000, with limited gains from further increases in marker density. GWAS-based selection performed better than random selection for most traits at low marker densities (100-1,000 SNPs), while random selection showed higher accuracy for width. In summary, the application of genomic selection of P. haitanensis breeding provides an effective strategy for identifying superior candidate individuals. In practical applications, the optimal model should be selected flexibly according to the genetic architecture of the traits and the available SNP density. Supplementary information The online version contains supplementary material available at https://doi.org/10.1007/s11032-026-01732-y.", "authors": "Wang J, Kong L, Xu Y, Ji D, Xie C, Wang W.", "journal": "Academic Journal", "year": "2026", "doi": "10.1007/s11032-026-01732-y", "url": "https://doi.org/10.1007/s11032-026-01732-y", "taxa": ["Pyropia"], "category": "breeding_molecular_pathology", "category_name": "육종 · 유전체 · 병해", "badge_color": "rose", "source": "Europe PMC", "lang": "en", "tier": "core", "is_domestic": false, "scientific_names": ["Pyropia haitanensis"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "An Excipient-Free Porphyra / Pyropia sp.-Derived Polynucleotide Modulates Nitrative Stress in LPS-Stimulated Macrophages and Murine Acute Lung Injury", "headline": "양식 Porphyra / Pyropia sp. 유래 폴리뉴클레오타이드의 항염증 및 니트로화 스트레스 조절 효과", "takeaways": ["연어 유래 PDRN의 대체재를 찾기 위해 양식 Porphyra / Pyropia sp.에서 첨가물이 없는 폴리뉴클레오타이드를 정제하여 특성을 분석했다.", "LPS 자극 세포에서 PS-PDRN은 3-nitrotyrosine을 77%로 낮추고, 쥐의 급성 폐 손상 모델에서는 폐 조직의 3-nitrotyrosine을 53%로 감소시켰다.", "정제된 Porphyra / Pyropia sp. 유래 폴리뉴클레오타이드는 iNOS 관련 인자의 과도한 억제 없이 단백질 니트로화를 낮추어 비동물성 PDRN 소재로서의 가능성을 입증했다."], "implications": "동물성 원료 의존도를 낮춘 친환경 기능성 소재 개발 현장에서 양식 김속(Porphyra / Pyropia sp.)을 고부가가치 바이오 소재의 비동물성 PDRN 공급원으로 활용하기 위한 대량 생산 공정 표준화 및 전임상 검증에 착수할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1498084393753-b411b2d26b34?auto=format&fit=crop&w=800&q=80", "abstract": "Polydeoxyribonucleotide (PDRN) is a DNA-derived material conventionally sourced from salmon, which has prompted interest in scalable non-animal alternatives. Here, we characterized an excipient-free polynucleotide purified from cultivated Porphyra / Pyropia sp. (PS-PDRN) and examined its radical-scavenging properties and its effects on nitrative-stress-related readouts. Reference nuclear assemblies of three Bangiales species were uniformly GC-rich (65.08-71.26%), in contrast to 43.89% for Oncorhynchus keta, the source species of conventional PDRN, which places the algal origin of the material in genomic context. PS-PDRN showed negligible DPPH radical scavenging but dose-dependent ABTS radical-cation scavenging, a profile shared with salmon-derived PDRN and distinct from the pre-purification intermediate. In LPS-stimulated RAW 264.7 macrophages, 50 µg/mL PS-PDRN raised nitrite to 133% and lowered nitrate to 85% of the LPS group, increasing the nitrite-to-nitrate partitioning ratio, and lowered 3-nitrotyrosine to 77% while iNOS protein (119%) and the total S-nitrosothiol pool (97%) were maintained and NADPH oxidase activity was unchanged. In murine LPS-induced acute lung injury, PS-PDRN lowered lung 3-nitrotyrosine to 53% of the LPS group, whereas lung iNOS protein remained at 95% and Nos2 at 67%, Hmox1 rose to 148%, and total SOD activity exceeded the LPS level. These preliminary findings show that the purified Porphyra / Pyropia sp.-derived polynucleotide has a radical-scavenging profile distinct from its pre-purification material and lowers protein nitration without proportionate suppression of iNOS-related readouts. They support further evaluation of cultivated Porphyra / Pyropia sp. as a non-animal source of PDRN-class polynucleotides and provide a basis for mechanistic, manufacturing, and translational validation.", "authors": "Lee SS, Han J, Lee WS, Ryu SJ, Yoo YC.", "journal": "Academic Journal", "year": "2026", "doi": "10.3390/md24100361", "url": "https://doi.org/10.3390/md24100361", "taxa": ["Porphyra", "Pyropia"], "category": "processing_materials_market", "category_name": "가공 · 소재 · 시장", "badge_color": "orange", "source": "Europe PMC", "lang": "en", "tier": "core", "is_domestic": false, "scientific_names": ["Porphyra", "Pyropia", "Oncorhynchus keta"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "The molecular mechanisms underlying hydrogen peroxide regulating free-living conchocelis maturation of Pyropia haitanensis", "headline": "과산화수소 신호전달을 통한 Pyropia haitanensis 사상체 성숙 조절 기전", "takeaways": ["Pyropia haitanensis 생활사에서 사상체에서 각포자낭가지로의 전환은 경제적 가치에 직결되나 그 분자적 기전은 잘 알려지지 않았다.", "500 μmol/L 농도의 DMTU 처리로 과산화수소와 슈퍼옥사이드 수준이 감소하면서 활성산소 균형이 깨지고, 광합성과 질소 대사가 억제되어 사상체 성숙이 지연되었다.", "과산화수소는 Pyropia haitanensis의 사상체 성숙을 조절하는 핵심 신호 물질로 작용한다."], "implications": "양식 현장에서 불리한 환경으로 인해 성숙 유도를 늦춰야 할 때, DMTU와 같은 처리를 활용하여 각포자 포낭의 유산 위험을 효과적으로 줄일 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1682687220063-4742bd7fd538?auto=format&fit=crop&w=800&q=80", "abstract": "The transition from conchocelis to conchosporangial branches is not only a key stage in the life cycle of Pyropia/Porphyra but also directly affects the yield and quality of economically important species such as Pyropia haitanensis. However, the molecular mechanisms underlying the maturation of P. haitanensis filaments remain poorly understood. Hydrogen peroxide (H 2 O 2), as an important signaling molecule, plays a significant role in algae development. This study demonstrated that treatment with the H 2 O 2 scavenger DMTU (500 μmol/L) significantly reduced H 2 O 2 and O 2 - levels within the algae, affecting the activity of antioxidant enzymes and the content of antioxidant substances. This disrupted the ROS balance, inhibited key pathways such as photosynthesis and nitrogen metabolism, and triggered dysregulation in downstream metabolite synthesis. Consequently, the levels of most amino acids and their derivatives, nucleotides, and lipids were decreased. This diverted energy and resources from the \"maturation program\" towards a \"stress-response program,\" thereby delaying conchocelis maturation. Notably, this inhibitory effect was reversible following DMTU removal. When unfavorable conditions necessitate delayed maturation induction, intervention with DMTU could be applied to effectively reduce the risk of conchospore \"abortion\". In summary, H 2 O 2 is a critical signaling molecule regulating the maturation of P. haitanensis conchocelis. This study provides a theoretical basis for elucidating the molecular regulatory network governing conchocelis maturation in Pyropia/Porphyra and achieving precise regulation of synchronized maturation.", "authors": "He R, Xian W, Xu Y, Ji D, Xie C, Wang W.", "journal": "Academic Journal", "year": "2026", "doi": "10.3389/fpls.2026.1979927", "url": "https://doi.org/10.3389/fpls.2026.1979927", "taxa": ["Porphyra", "Pyropia"], "category": "thallus_lifecycle_conchocelis", "category_name": "엽체 생리 · 생활사", "badge_color": "emerald", "source": "Europe PMC", "lang": "en", "tier": "core", "is_domestic": false, "scientific_names": ["Pyropia haitanensis", "Pyropia", "Porphyra"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Characterization of Ca 2+ -Dependent SOS-like Pathway Components Involved in the Salt Stress Response of an Intertidal Macroalga, Pyropia haitanensis", "headline": "조간대 홍조류 Pyropia haitanensis의 고염 스트레스 하 Ca2+ 신호전달과 SOS 경로 규명", "takeaways": ["조간대 홍조류는 고염 스트레스에 강한 내성을 보이지만, Ca2+ 신호전달과 SOS 경로를 통한 이온 조절 기전은 명확히 밝혀지지 않았다.", "고염 스트레스는 주로 세포 외 Ca2+ 유입으로 15분 만에 최대치를 기록하는 신호를 유발했으며, SOS1 매개 Na+ 유출은 Ca2+ 의존적으로 작동하고 14개의 SOS 관련 후보 유전자가 약 10분 만에 유의하게 발현되었다.", "PhSOS1-4는 PhSOS3L-5 및 PhSOS2L-2와 각각 상호작용하는 반면 PhSOS3L-5와 PhSOS2L-2 간에는 직접적 상호작용이 없어 고등식물과 다른 독특한 SOS 유사 조절 방식을 시사한다."], "implications": "현장 양식가와 연구자는 이번에 규명된 PhSOS1-4와 PhSOS3L-5 유전자의 고염 내성 증진 효과를 활용하여, 환경 변화에 강한 우수 품종 선발 및 양식 품종의 스트레스 저항성 강화 전략을 수립할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=800&q=80", "abstract": "Intertidal red algae show much stronger tolerance to hypersaline stress than terrestrial plants. However, the characteristics of Ca 2+ signaling and the SOS-related ion regulatory mechanisms involved in their hypersaline stress responses remain unclear. In this study, the representative intertidal red alga Pyropia haitanensis was used to characterize Ca 2+ signal transduction under hypersaline stress and to identify key components of the SOS pathway. Hypersaline stress rapidly induced a Ca 2+ signal mainly driven by extracellular Ca 2+ influx, which peaked at 15 min. Inhibition of Ca 2+ influx significantly suppressed Na + efflux, whereas inhibition of SOS1-mediated Na + efflux enhanced Ca 2+ influx. These results suggest that SOS1-associated Na + efflux is Ca 2+ -dependent and closely associated with Ca 2+ signaling during the hypersaline stress response. Based on the reference genome, 14 SOS-related candidate genes were identified. Most of these genes were significantly upregulated at approximately 10 min after hypersaline treatment, showing a rapid response pattern. Among them, PhSOS1-4 responded significantly at the transcriptional, protein abundance, and phosphorylation levels. PhSOS1-4 interacted with PhSOS3L-5 and PhSOS2L-2, respectively, whereas no direct interaction was detected between PhSOS3L-5 and PhSOS2L-2. These results suggest a possible SOS-like regulatory mode in P. haitanensis that is distinct from the classical SOS pathway in higher plants. In this pathway, PhSOS3L-5 may directly interact with PhSOS1-4 and potentially participate in the rapid regulation of Na+ efflux. Heterologous expression showed that both PhSOS1-4 and PhSOS3L-5 enhanced the hypersaline tolerance of Chlamydomonas reinhardtii. These findings provide new insights into the strong Na + efflux capacity of intertidal red algae.", "authors": "Wen J, Si H, Li J, Xu K, Xu Y, Ji D, Wang J, Xian W, Xie C, Wang W.", "journal": "Academic Journal", "year": "2026", "doi": "10.3390/plants15203188", "url": "https://doi.org/10.3390/plants15203188", "taxa": ["Pyropia"], "category": "thallus_lifecycle_conchocelis", "category_name": "엽체 생리 · 생활사", "badge_color": "emerald", "source": "Europe PMC", "lang": "en", "tier": "core", "is_domestic": false, "scientific_names": ["Pyropia haitanensis", "Chlamydomonas reinhardtii"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Seaweed sulfated polysaccharides regulate the gut microbiota-mucosal barrier-innate immunity axis: structural heterogeneity, immunological evidence, and translational prospects", "headline": "해조류 황산화 다당류의 장내 미생물-면역 축 조절 기전 분석", "takeaways": ["후코이단, 카라기난, 울반, 포르피란 등의 해조류 다당류는 구조적으로 다양하며 장내 미생물과 면역계에 영향을 주지만, 관련 문헌들이 여러 범주와 모델로 분산되어 있었다.", "포르피란은 미생물과 장벽의 상호작용을 가장 명확히 보여주며, 분자량과 황산화 패턴이 미생물 이용과 대사 산물 형성에 직접적인 영향을 미쳤다.", "이들 다당류는 장내 미생물과 면역을 연결하는 기질로 작용하며, 향후 임상 적용을 위해서는 철저한 표준화와 통합적 기전 연구가 필요하다."], "implications": "염증성 장질환, 장벽 손상 등 임상적 적용을 추진하는 연구자와 산업계는 복잡한 다당류의 구조적 불균형을 극복하기 위해 분자량과 황산화 패턴을 통제하는 표준화 공정을 도입해야 한다.", "thumbnail_url": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=800&q=80", "abstract": "Seaweed sulfated polysaccharides, fucoidan, carrageenan, ulvan, and porphyran, are structurally diverse marine glycans that modulate the gut microbiota, mucosal barrier, and innate immunity, yet the literature remains fragmented across classes, models, and processing histories. This review synthesizes evidence on their structure-function relationships, focusing on microbial enzymatic accessibility, selective fermentation, metabolite remodeling, barrier regulation, and immune signaling, while also assessing translational barriers. A systematic literature search prioritized mechanistic studies, structural analyses, animal models, human trials, and high-quality reviews. Our analysis reveals that porphyran provides the clearest microbiota-barrier coupling, fucoidan and carrageenan give the richest, but most heterogeneous, immune readouts, and ulvan is an emerging class with growing intestinal evidence. Molecular weight, sulfation pattern, and degradation history consistently shape microbial utilization and downstream effects across all classes. Disease contexts with the strongest support include inflammatory bowel disease, constipation, barrier injury, and infection-driven intestinal inflammation. Time-dependent immune shifts have been reported, but durable epigenetic memory remains unproven, and extra-intestinal evidence through gut-liver and gut-brain axes is still preliminary. We conclude that these polysaccharides are best understood as structurally defined substrates that bridge the microbiota, barrier, and immunity; future progress toward clinical translation will depend on stricter standardization, integrated mechanistic designs, and robust human data.", "authors": "Liu W, Zhang M, Huang J, Liu S, Chen R, Li Y, Liu J, Jia R.", "journal": "Academic Journal", "year": "2026", "doi": "10.3389/fimmu.2026.1920049", "url": "https://doi.org/10.3389/fimmu.2026.1920049", "taxa": ["Porphyra"], "category": "processing_materials_market", "category_name": "가공 · 소재 · 시장", "badge_color": "orange", "source": "Europe PMC", "lang": "en", "tier": "core", "is_domestic": false, "scientific_names": ["Porphyra"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Screening of gadusol and mycosporine-like amino acids in fishery by-products: potential sources for bioactive recovery", "headline": "아르헨티나 어업 부산물에서 천연 자외선 차단 성분 탐색", "takeaways": ["합성 자외선 차단제의 대안인 천연물 수요가 증가함에 따라, 미이용 어업 부산물과 비상업 종에서 가더솔과 마이코스포린 유사 아미노산의 상업적 활용 가능성을 조사했다.", "UV-Vis 분광광도법, HPLC-UV-Vis, UPLC-MS/MS 분석 결과, Pagrus pagrus의 암컷 생식소에서 3.78 ± 0.31 mg·g⁻¹ 건중량의 가더솔이 확인되었고 Pleoticus muelleri 두부 추출물에서 신로린과 포피라-334가 검출되었다.", "어업 부산물 자원의 타겟 매핑을 통해 남대서양 수산업의 순환경제 내에서 해양 유래 천연 자외선 차단제의 지속 가능한 생산 기반을 구축했다."], "implications": "현장 양식가와 산업계는 폐기되던 어업 부산물과 미이용 자원을 활용하여 고부가가치 기능성 원료인 MAAs와 가더솔을 안정적으로 수급하고 친환경 생산 공정을 최적화할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", "abstract": "The growing demand for natural alternatives to synthetic sunscreens has driven interest in marine compounds with effective antioxidant and UV-protective properties. Among these, the secondary metabolites gadusol and mycosporine-like amino acids (MAAs) are particularly promising. However, the commercial application of these photoprotectants requires a targeted mapping of high-yield sources and the integration of their recovery into existing fishery value chains. Our approach focused on the sustainable use of traditional fishery resources, specifically by valorizing by-products and non-commercial species that are currently underutilized. This research aims to identify specific species and tissues that can establish a basis for scalable recovery and protocol optimization, thereby enhancing the viability of these natural compounds for industrial use. In this study, six fishery species from the Argentine continental shelf (34°S-46°S) were screened using UV-Vis spectrophotometry, HPLC-UV-Vis, and UPLC-MS/MS. Gadusol was confirmed in female gonads of Pagrus pagrus, reaching concentrations of 3.78 ± 0.31 mg·g⁻ 1 dry weight, while Pleoticus muelleri head extracts contained shinorine and porphyra-334. In contrast, analysis of Chrysaora lactea proved inconclusive regarding specific MAAs due to low concentration. These findings establish a strategic foundation for the sustainable production of marine-derived natural sunscreens within the circular economy of the South Atlantic fisheries.", "authors": "Isla Naveira R, Massa AE, Churio MS.", "journal": "Academic Journal", "year": "2026", "doi": "10.1007/s11356-026-38349-9", "url": "https://doi.org/10.1007/s11356-026-38349-9", "taxa": ["Porphyra"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "Europe PMC", "lang": "en", "tier": "related", "is_domestic": false, "scientific_names": ["Pagrus pagrus", "Pleoticus muelleri", "Chrysaora lactea"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "A comprehensive comparison of single- and composite-seaweed feeds on growth performance, lipid metabolism, and immune function of large yellow croaker ( Larimichthys crocea)", "headline": "복합 해조류 사료 첨가가 조기(Large yellow croaker)의 성장과 지질 대사에 미치는 영향", "takeaways": ["고밀도 양식 환경의 고지방 식단으로 인한 조기(Larimichthys crocea)의 과도한 지방 축적 문제를 해결하기 위해 단일 및 복합 해조류 사료의 효과를 분석했다.", "복합 해조류 사료(FNKM2)를 8주간 급여한 결과, WGR이 1.66배 증가하고 HDL-C가 1.33배 증가했으며 조지방 함량이 24.20% 감소했고, 지방산 산화 유전자(cpt1, ppara, pgc-1a)와 TG 가수분해 유전자(lpl)가 상향 조절되었다.", "복합 해조류 사료는 조기의 성장 촉진, 지질 대사 최적화, 면역·항산화 기능 강화를 동시에 달성하여 집약적 양식 산업을 위한 기능성 사료 개발의 과학적 기반을 제공한다."], "implications": "양식 현장에서는 단일 성분 첨가를 넘어 켈프, Neoporphyra haitanensis, 후코이단을 조합한 복합 해조류 첨가제를 고밀도 어류 사료의 대사 질환 예방 및 성장 촉진 솔루션으로 활용할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80", "abstract": "Introduction The large yellow croaker ( Larimichthys crocea) is an economically important fish species in China, yet its quality and value are compromised by excessive fat deposition induced by high-fat diets under high-density aquaculture. Our previous study noted the lipid-regulating potential of individual seaweed components like fucoidan and kelp ( Saccharina japonica) powder, the synergistic effects of composite seaweed feeds remain underexplored. Methods This study investigated the effects of 3% Neoporphyra haitanensis compared with its control feed (CM1), and two composite seaweed feeds (FNKM1: 1% kelp + 1% N. haitanensis + 0.1% fucoidan; FNKM2: 2% kelp + 2% N. haitanensis + 0.2% fucoidan) compared with the control feed (CM2) over an 8-week feeding trial. Results and discussion The results showed that single N. haitanensis supplementation, despite limited growth promotion, improved muscle lipid composition by reducing triglycerides (TG) and LDL-C contents while increasing beneficial phospholipids. Notably, the composite seaweed feeds, particularly FNKM2, showed more pronounced effects on growth and lipid-related parameters, with WGR reaching 1.66-fold, accompanied by a 1.33-fold increase in HDL-C and a 24.20% decrease in crude lipid content. In addition, the composite seaweed diets (FNKM1 and FNKM2) significantly downregulated most of the differentially abundant lipids in muscle. Among these, TG and phospholipids were significantly reduced in the FNKM1 group. These changes were accompanied by the upregulation of fatty acid oxidation genes ( cpt1, ppara, pgc-1a) and the TG hydrolysis-related gene ( lpl). Both feeds also enhanced immune-antioxidant capacity (∑IoI >1): FNKM1 significantly increased ACP, ALP, lysozyme, GSH-Px, and CAT activities, whereas FNKM2 increased ACP, ALP, and CAT activities. Both groups modulated hepatic cytokine expression, including il-4, il-1b, and tnf-a. Overall, the composite seaweed feeds contributed to improved growth, optimized lipid metabolism, and enhanced immune function in large yellow croaker, offering a scientific basis for functional feed development in intensive aquaculture.", "authors": "Dang Y, Chai L, Xia R, Zhu S, Li G, Yang R, Wang J, Chen J, Liu Q.", "journal": "Academic Journal", "year": "2026", "doi": "10.3389/fcimb.2026.1947273", "url": "https://doi.org/10.3389/fcimb.2026.1947273", "taxa": ["Porphyra", "Neoporphyra"], "category": "processing_materials_market", "category_name": "가공 · 소재 · 시장", "badge_color": "orange", "source": "Europe PMC", "lang": "en", "tier": "core", "is_domestic": false, "scientific_names": ["Larimichthys crocea", "Saccharina japonica", "Neoporphyra haitanensis"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "남서해연안 진도-해남해역 해조류양식장 표층퇴적물의 유기물 및 미량금속 농도 분포", "headline": "진도·해남 해조류 양식장 표층퇴적물의 환경 및 미량금속 분포 특성", "takeaways": ["국내 남서해연안 진도와 해남 해역의 해조류양식장 표층퇴적물을 대상으로 입도, 유기물, 미량금속 농도 및 오염 수준을 조사했다.", "퇴적물은 주로 세립질이었으며, Cr, Cu, Fe, Hg, Zn, Li 농도는 니트 함량과 유의한 양의 상관관계를 보였고(r=0.786~0.878), Zn 1개 정점을 제외하면 전반적인 생태적 위험은 낮았다.", "이번 조사 결과는 향후 해당 해조류양식장 구역의 퇴적물 환경 질을 관리하기 위한 공간적 기준선으로 활용될 수 있다."], "implications": "현장 양식 관리자는 퇴적물 내 니트 함량과 미량금속의 상관관계를 고려하여 양식장 환경 모니터링 체계를 구축할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=800&q=80", "abstract": "This study investigated sediment grain size, organic matter, trace metal concentrations, and contamination levels in surface sediments from seaweed farming areas in the Jindo–Haenam region on the southwestern coast of Korea. Surface sediments were collected from 14 stations and analyzed for grain-size composition, total organic carbon (TOC), total nitrogen (TN), C/N ratio, and trace metals including As, Cd, Cr, Cu, Fe, Hg, Mn, Pb, and Zn, together with Li for grain-size correction. Sediments were predominantly muddy, with mud contents ranging from 12.4% to 99.7% (mean 80.1%). The concentrations of TOC and TN ranged from 2.5 to 9.0 mg/g and from 0.3 to 1.1 mg/g, respectively. The concentrations of Cr, Cu, Fe, Hg, Zn, and Li were significantly positively correlated with mud content (r=0.786–0.878, P≤0.001), whereas TOC and TN were not significantly correlated with mud content, indicating different controls on metal and organic-matter distributions. Based on the threshold effects level (TEL), pollution load index, and ecological risk index, overall trace metal contamination and ecological risk were low, although Licorrected Zn exceeded the TEL at one station. These results provide a spatial baseline for sediment quality management in seaweed farming areas.", "authors": "구준호, 이가람, 강재중, 윤상필 외", "journal": "한국수산과학회지", "year": "2026", "doi": "", "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003396577", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "KCI", "lang": "ko", "tier": "related", "is_domestic": true, "scientific_names": [], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Shimia rhodophyticola sp. nov., Neomarinovum algicola gen. nov., sp. nov., and Phycorhabdus gracilariae gen. nov., sp. nov., isolated from marine algae, and the taxonomic revision of nineteen taxa within the family Roseobacteraceae", "headline": "해조류 분리 균주 W99T, S113T, S268T의 다면발현 계통분류 및 Roseobacteraceae 과 분류체계 재검토", "takeaways": ["해조류로부터 분리한 세 균주 W99T, S113T, S268T의 계통발생 및 유전체학적 특성을 다면발현 분류학적 방법으로 분석했다.", "분석 결과 W99T는 Shimia 속의 신종(Shimia rhodophyticola sp. nov.)으로 확인되었으며, S113T와 S268T는 각각 Neomarinovum algicola gen. nov., sp. nov.와 Phycorhabdus gracilariae gen. nov., sp. nov.로 명명된 신규 속 및 종으로 밝혀졌다.", "광범위한 유전체 기반 연관성 분석을 통해 Roseobacteraceae 과 내 19개 분류군의 분류학적 개정을 수행하여 진화적 관계를 반영한 새로운 유전체 기반 분류 프레임워크를 마련했다."], "implications": "해양 미생물 분류학 연구자들은 개정된 유전체 기반 분류 프레임워크를 활용하여 Roseobacteraceae 과 내 미생물 다양성을 보다 정확하게 규명하고 계통 발생적 관계를 재평가할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1528183429752-a97d0bf99b5a?auto=format&fit=crop&w=800&q=80", "abstract": "Three bacterial strains, W99T, S113T, and S268T, were isolated from marine algae and subjectedto polyphasic taxonomic characterization. Phylogenetic and phylogenomic analysesplaced W99T within the genus Shimia, whereas S113T and S268T formed two distinct genus-level lineages within the family Roseobacteraceae. The three isolates wereGram-stain-negative, non-motile, and obligately aerobic, with optimum growth at 25, 25,and 30°C, respectively, and at 2.0% (w/v) NaCl. Ubiquinone-10 was the sole respiratory quinonein all three strains. The major fatty acids were 11-methyl C18:1 ω7c and summed feature8 (C18:1 ω7c and/or C18:1 ω6c) in strain W99T; C16:0 and summed feature 8 in strain S113T; and11-methyl C18:1 ω7c, cyclo-C19:0 ω8c, and summed feature 8 in strain S268T. The major polarlipids were phosphatidylglycerol and phosphatidylcholine, with diphosphatidylglycerol additionallydetected in strain S268T. Polyphasic taxonomic analyses demonstrated that strainW99T represents a novel species of the genus Shimia, for which the name Shimia rhodophyticolasp. nov. is proposed (W99T = KACC 24154T = JCM 38196T), whereas strains S113Tand S268T represent two novel genera and species, Neomarinovum algicola gen. nov., sp. nov. (S113T = KACC 23417T = JCM 38210T) and Phycorhabdus gracilariae gen. nov., sp. nov. (S268T = KACC 24156T = JCM 38211T), respectively. In addition, comprehensive phylogenomicand genome-based relatedness analyses support the taxonomic revision of nineteentaxa within the family Roseobacteraceae, providing a revised genome-based taxonomicframework that better reflects the evolutionary relationships within the family.", "authors": "Hui Seong Won, Hülya Bayburt, Byeong Jun Choi, Jeong Min Kim 외", "journal": "The Journal of Microbiology", "year": "2026", "doi": "10.71150/jm.2607010", "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003396464", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "KCI", "lang": "en", "tier": "related", "is_domestic": true, "scientific_names": ["Shimia rhodophyticola", "Neomarinovum algicola", "Phycorhabdus gracilariae", "Roseobacteraceae"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "감태 분말 첨가량에 따른 약과의 품질 특성", "headline": "감태 분말 첨가에 따른 약과의 품질 특성과 항산화 활성 평가", "takeaways": ["본 연구는 전통 유밀과인 약과에 감태 분말을 기능성 소재로 첨가하여 품질 특성과 활용 가능성을 검토하고자 했다.", "밀가루 중량 대비 0~2%의 감태 분말을 첨가한 결과, 첨가량이 늘어날수록 수분, 조회분, 조지방, 팽화율, 흡유율, 경도, 총 폴리페놀 함량 및 ABTS 라디칼 소거능이 증가했고 명도는 낮아졌다.", "저장 중 산화 안정성이 향상되었으며, 관능적 수용성과 품질특성을 종합할 때 감태 분말 1.5% 첨가가 가장 적절하다."], "implications": "전통 한과류 제조 시 해조류 분말을 활용하여 항산화성과 저장 안정성을 높이는 동시에, 관능적 기호도를 충족하는 최적의 배합비를 현장에 적용할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80", "abstract": "본 연구는 감태분말 첨가량에 따른 약과의 품질특성을 분석하여 감태분말의 기능성 전통 유밀과 소재로서의 활용 가능성을 검토하고자 하였다. 감태분말은 밀가루 중량 대비 0, 0.5, 1, 1.5 및 2% 수준으로 첨가하였으며, 일반성분, 이화학적 특성, 색도, 경도, 항산화 활성, 저장 중 산화 안정성 및 기호도를 측정하였다. 감태분말 첨가량이 증가할수록 수분, 조회분, 조지방 함량, 팽화율, 흡유율 및 경도는 증가하였고, 탄수화물 함량, pH 및 당도는 감소하였다. 색도는 첨가량 증가에 따라 명도는 낮아지고 적색도와 황색도는 높아져 약과의 색이 점차 진해지는 경향을 보였다. 또한 총 폴리페놀 함량과 ABTS 라디칼 소거능은 감태분말 첨가량이 증가할수록 유의적으로 증가하여 항산화 활성이 향상되었다. 저장 중 산가와 과산화물가는 모든 시료에서 증가하였으나, 감태분말 첨가군은 대조군보다 증가 폭이 낮아 산화 안정성이 우수한 것으로 나타났다. 기호도 평가에서는 감태분말 1.5% 첨가군이 전반적으로 가장 높은 평가를 받았으며, 2% 첨가군은 항산화 활성과 저장 안정성은 우수하였으나, 색의 과도한 진해짐, 해조류 향미의 강화 및 경도 증가에 따른 조직감 저하로 기호도가 다소 감소하였다. 따라서 감태분말은 약과의 항산화성 및 저장 안정성을 향상시킬 수 있는 기능성 소재로 활용 가능하며, 관능적 수용성과 품질특성을 종합적으로 고려할 때 1.5% 첨가가 가장 적절한 수준으로 판단된다.", "authors": "조예림, 안규혁, 김태빈, 유현희", "journal": "한국생활과학회지", "year": "2026", "doi": "", "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003398330", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "KCI", "lang": "ko", "tier": "related", "is_domestic": true, "scientific_names": [], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "이끼에서 다시마류까지: 기후면화 시대의 신규 광합성 자원 육종을 위한 표현체학 기반 접근", "headline": "기후변화 대응을 위한 이끼류와 다시마류 표현체학 기반 육종 체계", "takeaways": ["기후변화에 따라 농작물과 해조류 육종 목표가 수량과 품질을 넘어 환경 스트레스 적응성과 생산 안정성 확보로 확대되고 있다.", "영상과 센서를 활용한 표현체학은 시계열 분석을 통해 이끼류의 고온·건조 내성과 다시마류의 고온기 엽체 유지 및 회복력을 비파괴적·정량적으로 평가할 수 있게 한다.", "실내외를 연결하는 다단계 평가체계와 영상·형질 분석 표준화를 통해 신규 광합성 자원의 개발 기간과 평가 비용을 절감할 수 있다."], "implications": "양식 현장과 실내 제어시설을 연계한 다단계 평가체계를 구축하여, 기후 스트레스에 대응하는 신규 품종 선발의 효율성을 높이고 현장 검증 기간을 단축해야 한다.", "thumbnail_url": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", "abstract": "기후변화에 따라 육종의 목표는 수량과 품질 향상을 넘어 환경 스트레스 적응성, 스트레스 이후의 회복력, 생산 안정성 및 생태계 기능의 유지까지 포괄하는 방향으로 확대되고 있다. 이에 본 총설에서는 작물 육종기술의 발전과 표현형 평가의 한계를 검토하고, 표현체학을 활용하여 이끼류와 다시마류를 새로운 광합성 육종자원으로 개발할 가능성을 고찰하였다. 표현체학은 영상과 센서를 이용하여 다수 자원의 형태, 생장, 생리적 반응 및 환경적응성을 비파괴적·정량적·반복적으로 측정함으로써, 수작업과 단일 시점 조사에 의존해 온 표현형 평가의 한계를 보완할 수 있다. 특히 시계열 평가는 생장속도, 스트레스 손상, 회복속도 및 형질의 지속성을 새로운 선발기준으로 활용할 수 있게 한다. 이끼류에서는 자연집단의 수집과 클론 증식을 기반으로 군락 확장, 수분보유력, 고온·건조 내성, 재수화 후 회복력, 조직의 분해저항성 및 이용목적별 기능을 평가할 필요가 있다. 다시마류에서는 수집자원과 배우체 클론의 초기 선발, 유엽 단계의 고수온 검정 및 실제 양식장의 시계열 평가를 연계하여 생장량, 엽체 손상과 회복, 고온기 엽체 유지, 부착생물 피해 및 생산 안정성을 종합적으로 평가해야 한다. 이를 위해서는 실내 환경제어시설, 반자연적 재배시설 및 실제 서식지·양식장을 연결하는 다단계 평가체계를 구축하고, 생물군별 영상 획득조건과 핵심형질 및 분석방법을 표준화해야 한다. 이러한 표현체학 기반 육종체계는 유전체 정보가 부족한 신규 광합성 자원에서도 유용한 변이를 발견하고 우수 자원을 선발하며 현장 성능을 검증함으로써, 기후변화 대응 자원의 개발기간과 평가비용을 줄이는 핵심 방법론으로 활용될 수 있을 것이다.", "authors": "한경덕", "journal": "아열대농업생명과학지", "year": "2026", "doi": "", "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003398563", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "KCI", "lang": "ko", "tier": "related", "is_domestic": true, "scientific_names": [], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Genetic insights into species diversity and taxonomy of Ulva (Ulvales, Chlorophyta) in coastal Korea", "headline": "한국 연안 파래속(Ulva) 유전자 분석으로 15종 확인", "takeaways": ["한국 연안에서 식용 및 녹조 현상으로 중요한 파래속(Ulva)의 형태학적 분류 한계를 극복하고 종 다양성을 규명하기 위해 DNA 기반 연구가 필요했다.", "tufA, rbcL, ITS 유전자 마커를 분석하여 U. aragoënsis, U. iliohaha, U. lacinulata, U. partita 등 미기록종을 포함해 총 14종을 확인했으며 기존 1종을 더해 한국의 파래속(Ulva) 확정 종수가 15종으로 늘어났다.", "일부 종에서 넓은 형태적 변이와 형태적 특징의 중첩 현상이 관찰되어 분자 taxonomic 기준의 확립과 환경 구배에 따른 형태적 가소성 이해가 중요하다."], "implications": "현장 양식가와 정책 담당자는 이번에 정립된 분자 분류 기준을 활용하여 녹조 유발 원인종을 정확히 판별하고 생태계 관리에 적용할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=800&q=80", "abstract": "The green macroalgal genus Ulva is widely distributed, ecologically important, and serves as a versatile bioresource. In South Korea, where Ulva species are utilized as edible seaweeds, challenges such as low production and the impact of green tides on aquaculture and marine ecosystems are evident. Recognizing the limitations of morphologybased taxonomy, there has been a shift towards the integration of DNA-based methods for species delimitation and identification. This study addresses the gaps in understanding Ulva diversity in Korean coastal areas by analysing species based on three genetic markers (tufA, rbcL, and ITS) alongside detailed morphological analyses. Our findings unveiled 14 Ulva species through sampling, including first records of U. aragoënsis, U. iliohaha, U. lacinulata, and U. partita. When combined with one previously published DNA-confirmed species, our findings bring the total number of Ulva species confirmed by molecular data in Korea to 15, thereby refining and expanding current knowledge of Ulva diversity in the region. Wide morphological variation was observed within some Ulva species, such as U. conglobata and U. australis, as well as overlapping morphological traits that blurred the boundaries between several species having a rosette-like form, revealing intriguing patterns of form variation. This study establishes a molecular taxonomic baseline for Ulva in Korea and provides new insights into the morphological plasticity of the genus across environmental gradients.", "authors": "Tran Lan-Anh T., Kim Myung Sook, Lee Hyung Woo, Kang Jeong Chan 외", "journal": "Algae", "year": "2026", "doi": "10.4490/algae.2026.41.3.3", "url": "https://doi.org/10.4490/algae.2026.41.3.3", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "Crossref (국내 저널)", "lang": "en", "tier": "related", "is_domestic": true, "scientific_names": ["Ulva", "Ulva aragoënsis", "Ulva iliohaha", "Ulva lacinulata", "Ulva partita", "Ulva conglobata", "Ulva australis"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Colaconema zhanjiangensis sp. nov. (Colaconemataceae, Rhodophyta): a new epi-endophytic filamentous red algal species from China", "headline": "중국 광둥성 잔장시 홍조류에서 신종 Colaconema zhanjiangensis 발견", "takeaways": ["경제적으로 중요한 대형 해조류의 부생 및 내생 생물인 Colaconema 속은 양식 생산성에 영향을 미치나, 통합적 형태 및 분자 분석을 거친 중국 내 보고는 드물다.", "중국 광둥성 잔장시의 Solieria sp.에서 채집한 표본을 형태 관찰과 rbcL 및 COI-5P 유전자 서열로 분석한 결과, 세포 크기는 23~26 × 6~8 μm이며 rbcL 5.06~13.65%, COI-5P 7.23~13.09%의 충분한 유전자 변이를 보였다.", "이러한 형태적 특징과 유전자 분석 결과는 해당 표본이 Colaconema 속의 신종임을 입증하며, 해당 속의 종 다양성 이해를 넓힌다."], "implications": "현장 양식장이나 숙주 숙주 감염 관리 시, 기존에 보고되지 않은 신종 내생·부생 홍조류의 유전자 마커(rbcL, COI-5P) 정보를 활용하여 정확한 종 판별과 역학 조사를 수행해야 한다.", "thumbnail_url": "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80", "abstract": "The genus Colaconema represents a significant group of filamentous red algae that commonly grow as epiphytes, endophytes, or epi-endophytes on a variety of economically important macroalgae, potentially affecting host health and aquaculture productivity. Although numerous Colaconema species have been described worldwide, few have been reported from China based on integrated morphological and molecular analyses. In this study, Colaconema specimens were collected from the red macroalgae Solieria sp. in Zhanjiang City, Guangdong Province, China, and identified through detailed morphological observations combined with rbcL and 5′ region of cytochrome c oxidase subunit I (COI-5P) sequence analyses. Morphological examination revealed cylindrical cells (23–26 × 6–8 μm), irregularly branched filaments, a single plastid with a single pyrenoid, and ovoid monosporangia (11–12 × 7–9 μm) arranged in various patterns. Molecular analyses demonstrated sufficient sequence divergence from other Colaconema species (rbcL: 5.06–13.65%; COI-5P: 7.23–13.09%), supporting the recognition of these specimens as a new species. The findings expand the current understanding of species diversity within the genus.", "authors": "He Haiping, Li Nenghui, Cai Hongyan, Zeng Jun 외", "journal": "Algae", "year": "2026", "doi": "10.4490/algae.2026.41.2.26", "url": "https://doi.org/10.4490/algae.2026.41.2.26", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "Crossref (국내 저널)", "lang": "en", "tier": "related", "is_domestic": true, "scientific_names": ["Colaconema zhanjiangensis", "Colaconema", "Solieria sp."], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "First record of the red alga Incendia (Peyssonneliales) for Micronesia, including the description of eight new species", "headline": "미크로네시아에서 홍조류 속 신종 8종 발견", "takeaways": ["미크로네시아 5개 섬에서 홍조류의 일종인 Incendia 속의 첫 기록과 분포 확장이 보고되었다.", "형태학적 및 분자 분석을 바탕으로 8종의 신종이 새롭게 기술되어 글로벌 종 다양성이 80% 증가했다.", "열대 북서태평양 지역이 해당 속의 주요 다양성 중심지임이 확인되었다."], "implications": "열대 해양 지역의 페이소넬리아과(Peyssonneliales) 생물다양성이 여전히 과소평가되어 있어, 향후 열대 해역을 중심으로 한 분류학적 탐사와 유전자원 보존 전략을 강화해야 한다.", "thumbnail_url": "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&q=80", "abstract": "The first records of the red algal genus Incendia are reported from five Micronesian islands. The distribution range of Incendia crenata is expanded to include the islands of Kosrae and Pohnpei in Micronesia. Additionally, eight new species are described based on morphological and molecular analyses: Incendia chamoruensis sp. nov., I. dixonii sp. nov., I. fragilis sp. nov., I. orotensis sp. nov., I. gordonii sp. nov., I. lobbanii sp. nov., I. micronesica sp. nov., and I. tsudae sp. nov. While each of the newly described species exhibits the diagnostic features of the genus Incendia, they are distinguished from their congeners by a combination of unique anatomical characters and pronounced genetic divergence. The description of eight new species represents an 80% increase in the global species richness of Incendia. These additions bring the total number of species in the Tropical Northwestern Pacific to 14 out of the 18 known globally. This provisionally establishes this marine province as the primary diversity hotspot for the genus and suggests that peyssonnelioid biodiversity remains substantially underestimated, particularly in tropical regions.", "authors": "Mills Matthew S., Schils Tom", "journal": "Algae", "year": "2026", "doi": "10.4490/algae.2026.41.2.19", "url": "https://doi.org/10.4490/algae.2026.41.2.19", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "Crossref (국내 저널)", "lang": "en", "tier": "related", "is_domestic": true, "scientific_names": ["Incendia", "Incendia crenata", "Incendia chamoruensis", "Incendia dixonii", "Incendia fragilis", "Incendia orotensis", "Incendia gordonii", "Incendia lobbanii", "Incendia micronesica", "Incendia tsudae"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "A survey along the east coast of Thailand reveals high diversity in the genus Lobophora (Dictyotales, Phaeophyceae): with the description of four new species", "headline": "태국 동해안의 갈조류 Lobophora 속 분류군 다양성 규명 및 4개 신종 보고", "takeaways": ["열대 및 아열대 해양 생태계에서 생태적 중요성이 큰 갈조류 Lobophora 속은 형태적 유사성으로 인해 DNA 분석을 기반으로 한 체계적인 분류학적 접근이 필요하다.", "태국만 전역의 광범위한 현장 조사를 통해 14개의 단계통군이 확인되었으며, 4개의 신종(Lobophora lewmanomontiae, L. ogawae, L. thiemmedhii, L. velasquezii)과 3개의 미기록종이 보고되어 태국 내 총 21개종이 확인되었다.", "이번 조사를 통해 동남아시아에 서식하는 Lobophora 속은 총 30개종으로 늘어났으며, 이 중 12개종이 지역 고유종으로 밝혀져 광범위한 생물다양성 조사가 생물지리학적 분포 이해에 기여한다."], "implications": "동남아시아 연안의 숨겨진 해조류 다양성을 정확히 파악하기 위해서는 형태 관찰과 DNA 분석을 결합한 정밀한 분류 작업이 필수적이며, 이는 향후 지역 해양 생태계 보전 및 해조류 자원 관리 정책 수립의 기초 자료로 활용될 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80", "abstract": "Lobophora (Dictyotales, Phaeophyceae) is an ecologically important seaweed genus in tropical and subtropical marine ecosystems. This alga exhibits cryptic diversity and morphological plasticity, which require taxonomic delineations that primarily depend on DNA analyses, complemented by morphological and ecological data. Species diversity and distribution within Southeast Asia remain understudied compared to well-documented regions such as the Caribbean and the western Pacific. This study provides a comprehensive assessment of the genus Lobophora along the east coast of Thailand, integrating DNA-based surveys with morphological analyses. Extensive sampling across the Gulf of Thailand revealed 14 well-supported monophyletic clades of Lobophora. Among these, we described four new species (L. lewmanomontiae sp. nov., L. ogawae sp. nov., L. thiemmedhii sp. nov., and L. velasquezii sp. nov.) and reported three new national records (L. abscondita, L. henae, and L. quangtriensis), thereby bringing the Thai total to 21 species. When combined with previous records, 30 species have now been recorded from Southeast Asia, with 12 of which are endemic to the region. This study also emphasizes the importance of extensive sampling across broader areas, which enhances our understanding of biogeographic distributions and their implications for coastal ecosystem management.", "authors": "Klomjit Anirut, Draisma Stefano G. A., Praiboon Jantana, Jurejan Narapat 외", "journal": "Algae", "year": "2026", "doi": "10.4490/algae.2026.41.2.2", "url": "https://doi.org/10.4490/algae.2026.41.2.2", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "Crossref (국내 저널)", "lang": "en", "tier": "related", "is_domestic": true, "scientific_names": ["Lobophora", "Lobophora lewmanomontiae", "Lobophora ogawae", "Lobophora thiemmedhii", "Lobophora velasquezii", "Lobophora abscondita", "Lobophora henae", "Lobophora quangtriensis"], "is_ai_summary": true, "summary_source": "gemini"}, {"title": "Novel biodiversity and biogeography insights of filamentous Bangiales (Rhodophyta) from China", "headline": "중국 해역 사상체 Bangiales의 신종 및 계통 지리적 분포 규명", "takeaways": ["단순하고 가변적인 형태학적 특징으로 인해 분류가 까다로웠던 사상체 Bangiales의 생물다양성을 분자 분석 기법을 통해 체계적으로 조사했다.", "총 37개 지역에서 채집한 49개 표본의 rbcL 및 18S 유전자 서열 분석을 통해 4개 분기군과 7개의 추정 종을 확인했으며, 이 중 2개는 미기록 크립틱 종, 1개는 중국 신기록 종으로 밝혀졌다.", "BioGeoBEARS 분석 결과 동아시아가 크라운 분기군의 조상 지역으로 높은 확률을 보였으며, 동고드와나에서 전 세계로의 확장 시나리오를 도출했다."], "implications": "형태학적으로 구별하기 어려운 크립틱 종의 판별과 정확한 계통 분류를 위해 rbcL 및 18S 유전자 기반의 분자 마커와 ABGD, GMYC 등의 종 구분 모델을 적극 도입해야 한다. 또한 전 세계 해조류의 지리적 분포 패턴과 진화 경로를 추적하는 연구는 향후 자원 관리 및 보전 전략 수립의 기초 자료로 활용할 수 있다.", "thumbnail_url": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=800&q=80", "abstract": "The taxonomy of filamentous Bangiales was challenging due to its plastic and simple morphology. Molecular approaches play a significant role in revealing cryptic biodiversity and resolving phylogenetic relationships. Nonetheless, the biodiversity of filamentous Bangiales in many regions, including China, has not been thoroughly investigated yet using updated methods. In this study, we investigated the biodiversity of filamentous Bangiales in China, employing a more comprehensive and detailed sampling approach. The rbcL and 18S gene sequences (partial or complete) of 49 specimens collected from 37 sites were obtained. Phylogenetic analysis resolved these specimens into four clades, including Bangia, ‘Bangia’ 1, ‘Bangia’ 2, and Pseudoganglia. Seven putative species were delineated using empirical methods, including Automatic Barcode Gap Discovery (ABGD), General Mixed Yule Coalescent (GMYC), and Bayesian Poisson tree processes (bPTP), as well as genealogical analysis. Among them, four were species previously reported, two were cryptic species, and the other was a new record in China. The distribution of these molecularly delineated species was mapped along China’s coastline. Similar to the bladed Bangiales, antitropical, transoceanic, and thermal-gradient distribution patterns were also observed for filamentous Bangiales on a global scale. The ancestral region was retraced by incorporating species data from China into existing datasets using BioGeoBEARS with BAYAREALIKE + J as the best-supported model. Under this model, East Asia shows the highest marginal probability as the ancestral area for the crown clade, though uncertainty remains across alternative regions. A most parsimonious expansion scenario of Bangiales from east Gondwana to other regions of the world was proposed.", "authors": "Wang Yan-De, Deng Yin-Yin, Tian Cui-Cui, Ge Han-Ru 외", "journal": "Algae", "year": "2026", "doi": "10.4490/algae.2026.41.2.27", "url": "https://doi.org/10.4490/algae.2026.41.2.27", "taxa": ["Unclassified"], "category": "related_research", "category_name": "연관 연구", "badge_color": "amber", "source": "Crossref (국내 저널)", "lang": "en", "tier": "related", "is_domestic": true, "scientific_names": ["Bangia", "Pseudoganglia"], "is_ai_summary": true, "summary_source": "gemini"}]}];
+    const INITIAL_ARCHIVE = ALL_ARCHIVES[0];  // 최신 호 (중복으로 넣지 않음)
+
+    let currentArchive = INITIAL_ARCHIVE;
+    let selectedTaxa = 'all';
+    let searchQuery = '';
+
+    function esc(v) {
+      return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    // 학명 이탤릭: 먼저 HTML 이스케이프 후, 학명만 <em> 으로 감쌈 (패턴은 build_site.py 에서 생성)
+    const SCI_RE = new RegExp("(^|[^A-Za-z])((?:Lactiplantibacillus|Methanobrevibacter|Roseobacteraceae|Wilsonosiphonia|Gracilariopsis|Pterocladiella|Chlamydomonas|Lactobacillus|Pseudoganglia|Saccharomyces|Succinivibrio|Asparagopsis|Falkenbergia|Larimichthys|Neomarinovum|Oncorhynchus|Phycocalidia|Phycorhabdus|Polysiphonia|Rugulopteryx|Ruminobacter|Arabidopsis|Ascophyllum|Capsosiphon|Escherichia|Kappaphycus|Macrocystis|Neoporphyra|Olpidiopsis|Scytosiphon|Selenomonas|Alternaria|Bostrychia|Colaconema|Cystoseira|Gracilaria|Halopteris|Monostroma|Neopyropia|Saccharina|Chrysaora|Corallina|Laminaria|Lobophora|Pleoticus|Sargassum|Spirulina|Bacillus|Caulerpa|Chondria|Chondrus|Dictyota|Ecklonia|Eucheuma|Gelidium|Incendia|Porphyra|Solieria|Hizikia|Pyropia|Pythium|Undaria|Bangia|Codium|Ishige|Pagrus|Shimia|Vibrio|Fucus|Ulva)(?:\\s+(?:yangmeikengense|lewmanomontiae|rhodophyticola|zhanjiangensis|quangtriensis|suborbiculata|chamoruensis|crassicaulis|indonesianum|vietnamensis|brevifolium|gracilariae|haitanensis|micronesica|pinnatifida|reinhardtii|sentosaense|thiemmedhii|umbilicalis|velasquezii|abscondita|cerevisiae|conglobata|fulvescens|lacinulata|lomentaria|pilulifera|rufolanosa|taxiformis|australis|eudentata|fusiforme|latissima|orotensis|plantarum|porphyrae|prolifera|usneoides|yezoensis|algicola|fragilis|gordonii|gracilis|iliohaha|japonica|linearis|lobbanii|millerae|morrowii|muelleri|okamurae|scoparia|thaliana|balteum|binderi|corneum|crenata|crinale|dentata|dixonii|fragile|lactuca|nitidum|partita|seriata|tenella|thaueri|armata|crocea|dioica|fujiae|lactea|ogawae|pagrus|rigida|taurus|tenera|tsudae|henae|cava|coli|keta|spp?\\.))?|[A-Z][a-z]{0,2}\\.\\s?(?:yangmeikengense|lewmanomontiae|rhodophyticola|zhanjiangensis|quangtriensis|suborbiculata|chamoruensis|crassicaulis|indonesianum|vietnamensis|brevifolium|gracilariae|haitanensis|micronesica|pinnatifida|reinhardtii|sentosaense|thiemmedhii|umbilicalis|velasquezii|abscondita|cerevisiae|conglobata|fulvescens|lacinulata|lomentaria|pilulifera|rufolanosa|taxiformis|australis|eudentata|fusiforme|latissima|orotensis|plantarum|porphyrae|prolifera|usneoides|yezoensis|algicola|fragilis|gordonii|gracilis|iliohaha|japonica|linearis|lobbanii|millerae|morrowii|muelleri|okamurae|scoparia|thaliana|balteum|binderi|corneum|crenata|crinale|dentata|dixonii|fragile|lactuca|nitidum|partita|seriata|tenella|thaueri|armata|crocea|dioica|fujiae|lactea|ogawae|pagrus|rigida|taurus|tenera|tsudae|henae|cava|coli|keta))(?![A-Za-z])", 'g');
+    function sci(v) {
+      return esc(v).replace(SCI_RE, '$1<em>$2</em>');
+    }
+    function safeUrl(u) {
+      return /^https?:[/][/]/i.test(u || '') ? esc(u) : '#';
+    }
+
+    function initIcons() {
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // 다크모드 초기화
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      initIcons();
+    });
+
+    // 논문 카드 렌더러
+    function renderCard(art, idx) {
+      const taxaBadges = (art.taxa || []).filter(t => t && t !== 'Unclassified' && t !== '-').map(t =>
+        `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-black/60 backdrop-blur-md text-white border border-white/20 italic">${esc(t)}</span>`
+      ).join(' ');
+
+      const extraBadges =
+        (art.tier === 'related' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-400/90 text-amber-950 border border-amber-200/60">연관 연구</span>` : '') +
+        (art.is_domestic ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-white/90 text-slate-800 border border-white/40">🇰🇷 국내</span>` : '');
+
+      const takeawaysList = (art.takeaways || []).map((point, pIdx) => `
+        <li class="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+          <span class="shrink-0 w-4 h-4 rounded-full bg-ocean-100 dark:bg-ocean-950 text-ocean-700 dark:text-ocean-300 flex items-center justify-center text-[10px] font-bold mt-0.5 border border-ocean-300 dark:border-ocean-800">${pIdx + 1}</span>
+          <span>${sci(point)}</span>
+        </li>
+      `).join('');
+
+      const cleanAbstract = (art.abstract || '초록 정보가 제공되지 않는 논문입니다.').replaceAll('###','').replaceAll('####','').replaceAll('**','').trim();
+
+      return `
+        <article class="flex flex-col justify-between rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-deepsea-900 shadow-sm hover:shadow-xl hover:border-ocean-300 dark:hover:border-ocean-600 transition-all duration-300 overflow-hidden group">
+          <div>
+            <!-- 썸네일 -->
+            <div class="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+              <img src="${safeUrl(art.thumbnail_url)}" alt="${esc(art.headline)}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              <div class="absolute top-3 left-3 flex flex-wrap gap-1">${extraBadges}${taxaBadges}</div>
+              <div class="absolute top-3 right-3">
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/90 dark:bg-black/80 backdrop-blur-md text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                  ${esc(art.journal || 'Journal')}
+                </span>
+              </div>
+              <div class="absolute bottom-2.5 left-3 right-3 text-[11px] text-white/90 truncate">
+                <i data-lucide="user" class="w-3 h-3 inline mr-1 text-ocean-300"></i> ${esc(art.authors || 'Authors')}
+              </div>
+            </div>
+
+            <!-- 카드 본문 -->
+            <div class="p-5 sm:p-6 space-y-4">
+              <!-- 헤드라인 -->
+              <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-ocean-600 dark:group-hover:text-ocean-400 transition-colors leading-snug line-clamp-2">
+                <a href="${safeUrl(art.url)}" target="_blank" rel="noopener noreferrer">${sci(art.headline)}</a>
+              </h3>
+              <!-- 원문 제목 -->
+              <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-mono">${sci(art.title)}</p>
+
+              <!-- Key Takeaways -->
+              <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                  <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
+                  <span>Key Takeaways (핵심 성과)</span>
+                </h4>
+                <ul class="space-y-2">${takeawaysList}</ul>
+              </div>
+
+              <!-- 연구자 시사점 -->
+              ${art.implications ? `
+                <div class="p-3 rounded-xl bg-ocean-50/80 dark:bg-ocean-950/50 border border-ocean-200/80 dark:border-ocean-900/60">
+                  <h5 class="text-[11px] font-bold text-ocean-800 dark:text-ocean-300 uppercase tracking-wider mb-1 flex items-center gap-1">
+                    <i data-lucide="lightbulb" class="w-3 h-3 text-amber-500"></i>
+                    <span>Researcher's Takeaway (시사점)</span>
+                  </h5>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${sci(art.implications)}</p>
+                </div>
+              ` : ''}
+
+              <!-- 초록 토글 -->
+              <div class="pt-2">
+                <button type="button" onclick="toggleAbstractView('${idx}')" id="btn-abstract-${idx}"
+                  class="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-ocean-600 dark:hover:text-ocean-400 transition flex items-center gap-1.5 py-1 px-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-ocean-300">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                  <span>초록 원문 보기</span>
+                  <i data-lucide="chevron-down" id="icon-abstract-${idx}" class="w-3.5 h-3.5 transition-transform duration-200"></i>
+                </button>
+                <div id="abstract-drawer-${idx}" class="hidden mt-3 p-4 rounded-xl bg-slate-50 dark:bg-deepsea-950 border border-slate-200 dark:border-slate-800 text-xs font-serif-mag text-slate-700 dark:text-slate-300 leading-relaxed max-h-80 overflow-y-auto whitespace-pre-line shadow-inner">
+                  <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1.5 font-sans font-bold flex items-center justify-between">
+                    <span>ORIGINAL ABSTRACT</span>
+                    <span>DOI: ${esc(art.doi || '-')}</span>
+                  </div>
+                  ${sci(cleanAbstract)}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 카드 푸터 -->
+          <div class="px-5 sm:px-6 py-3 border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-deepsea-900/50 flex items-center justify-between">
+            <span class="text-[11px] text-slate-400">${esc(art.journal || 'Academic Article')}${art.year ? ' (' + esc(art.year) + ')' : ''}</span>
+            <a href="${safeUrl(art.url)}" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 text-xs font-bold text-ocean-600 dark:text-ocean-400 hover:text-ocean-800 dark:hover:text-ocean-300 transition">
+              <span>원문 열람 (DOI)</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        </article>
+      `;
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    // 섹션 렌더링
+    // ──────────────────────────────────────────────────────────────
+    function renderSections() {
+      const allArticles = currentArchive.articles || [];
+      const emptyState = document.getElementById('empty-state');
+      const filterCount = document.getElementById('filter-count');
+
+      // 필터 적용
+      const filtered = allArticles.filter(art => {
+        if (selectedTaxa !== 'all') {
+          const hasTaxa = (art.taxa || []).some(t => t.toLowerCase().includes(selectedTaxa.toLowerCase()));
+          const matchTitle = (art.title || '').toLowerCase().includes(selectedTaxa.toLowerCase());
+          const matchHead = (art.headline || '').toLowerCase().includes(selectedTaxa.toLowerCase());
+          if (!hasTaxa && !matchTitle && !matchHead) return false;
+        }
+        if (searchQuery.trim() !== '') {
+          const q = searchQuery.toLowerCase();
+          const texts = [art.headline, art.title, art.authors, art.abstract, ...(art.takeaways || [])].join(' ').toLowerCase();
+          if (!texts.includes(q)) return false;
+        }
+        return true;
+      });
+
+      filterCount.innerText = filtered.length;
+
+      // 섹션 목록 (build_site.py 의 SECTIONS 에서 생성)
+      const SECTIONS = [{"cat": "breeding_molecular_pathology", "slug": "breeding"}, {"cat": "thallus_lifecycle_conchocelis", "slug": "physiology"}, {"cat": "smart_aquaculture_mass_culture", "slug": "aquaculture"}, {"cat": "processing_materials_market", "slug": "processing"}, {"cat": "blue_carbon_feed_methane", "slug": "bluecarbon"}, {"cat": "related_research", "slug": "related"}];
+      const LEGACY_MAP = { 'thallus_lifecycle_cultivation': 'thallus_lifecycle_conchocelis' };
+
+      const groups = {};
+      SECTIONS.forEach(sec => groups[sec.cat] = []);
+      filtered.forEach((art, idx) => {
+        let cat = LEGACY_MAP[art.category] || art.category;
+        if (!groups[cat]) cat = 'related_research';
+        groups[cat].push({ art, globalIdx: idx });
+      });
+
+      const insights = currentArchive.editor_insights || {};
+      SECTIONS.forEach(({cat, slug}) => {
+        const items = groups[cat];
+        document.getElementById('grid-' + slug).innerHTML = items.map(item => renderCard(item.art, item.globalIdx)).join('');
+        document.getElementById('badge-count-' + slug).innerText = `${items.length}편 수록`;
+        // 논문이 없는 섹션은 본문·메뉴 모두 숨김
+        document.getElementById('sec-' + slug).classList.toggle('hidden', items.length === 0);
+        document.getElementById('nav-' + slug).classList.toggle('hidden', items.length === 0);
+
+        // Editor's Insight: 그 호 논문으로 만든 것만, 없으면 상자 숨김
+        const ins = insights[cat];
+        const tEl = document.getElementById('insight-title-' + slug);
+        const cEl = document.getElementById('insight-content-' + slug);
+        tEl.closest('.rounded-2xl').classList.toggle('hidden', !(ins && ins.content));
+        tEl.innerHTML = sci((ins && ins.title) || '');
+        cEl.innerHTML = sci((ins && ins.content) || '');
+      });
+
+      emptyState.classList.toggle('hidden', filtered.length > 0);
+      initIcons();
+    }
+
+    // 초록 토글
+    window.toggleAbstractView = function(idx) {
+      const drawer = document.getElementById(`abstract-drawer-${idx}`);
+      const btn = document.getElementById(`btn-abstract-${idx}`);
+      const icon = document.getElementById(`icon-abstract-${idx}`);
+      if (!drawer || !btn) return;
+      const isHidden = drawer.classList.contains('hidden');
+      if (isHidden) {
+        drawer.classList.remove('hidden');
+        btn.querySelector('span').innerText = '초록 원문 숨기기';
+        btn.classList.add('bg-ocean-50', 'text-ocean-700', 'border-ocean-300');
+        if (icon) icon.classList.add('rotate-180');
+      } else {
+        drawer.classList.add('hidden');
+        btn.querySelector('span').innerText = '초록 원문 보기';
+        btn.classList.remove('bg-ocean-50', 'text-ocean-700', 'border-ocean-300');
+        if (icon) icon.classList.remove('rotate-180');
+      }
+      initIcons();
+    };
+
+    // 검색
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderSections();
+    });
+
+    // 생물군 필터
+    document.querySelectorAll('.taxa-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.taxa-btn').forEach(b => {
+          b.className = 'taxa-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 border border-slate-200 dark:border-slate-700';
+        });
+        btn.className = 'taxa-btn px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-slate-100';
+        selectedTaxa = btn.getAttribute('data-taxa');
+        renderSections();
+      });
+    });
+
+    // 필터 초기화
+    document.getElementById('reset-filters').addEventListener('click', () => {
+      selectedTaxa = 'all';
+      searchQuery = '';
+      document.getElementById('search-input').value = '';
+      document.querySelector('.taxa-btn[data-taxa="all"]').click();
+    });
+
+    // 지난 호수 모달
+    const modal = document.getElementById('archive-modal');
+    const modalBtn = document.getElementById('archive-modal-btn');
+    const closeModal = document.getElementById('close-modal');
+    const archiveList = document.getElementById('archive-list');
+    const archiveCountBadge = document.getElementById('archive-count-badge');
+
+    archiveCountBadge.innerText = ALL_ARCHIVES.length;
+
+    modalBtn.addEventListener('click', () => {
+      archiveList.innerHTML = ALL_ARCHIVES.map(arch => `
+        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-ocean-50/60 dark:hover:bg-slate-800/60 transition cursor-pointer flex items-center justify-between"
+             onclick="switchArchive('${esc(arch.date)}')">
+          <div>
+            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">${esc(arch.title)}</h4>
+            <p class="text-xs text-slate-400 mt-0.5">발행일: ${arch.date} • 분석 논문: ${arch.total_papers || (arch.articles || []).length}편</p>
+          </div>
+          <span class="text-xs font-bold text-ocean-600 dark:text-ocean-400 flex items-center gap-1">
+            호수 열람 <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+      `).join('');
+      modal.classList.remove('hidden');
+      initIcons();
+    });
+
+    closeModal.addEventListener('click', () => modal.classList.add('hidden'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+
+    window.switchArchive = function(date) {
+      const found = ALL_ARCHIVES.find(a => a.date === date);
+      if (found) {
+        currentArchive = found;
+        document.getElementById('hero-issue-date').innerText = found.date + '호';
+        document.getElementById('stat-papers').innerText = (found.articles || []).length + '편';
+        renderSections();
+        modal.classList.add('hidden');
+      }
+    };
+
+    // 초기 렌더링
+    document.getElementById('hero-issue-date').innerText = currentArchive.date + '호';
+    document.getElementById('stat-papers').innerText = (currentArchive.articles || []).length + '편';
+    renderSections();
+    initIcons();
+  </script>
+</body>
+</html>
